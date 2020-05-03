@@ -5,6 +5,7 @@ import com.paydaybank.dashboard.web.helper.ResponseHelper;
 import com.paydaybank.dashboard.web.model.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,6 +30,14 @@ public class CustomizedExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity handleConflictException(Exception ex, WebRequest request) {
         Response duplicateResponse = ResponseHelper.duplicateEntity();
         return new ResponseEntity(duplicateResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public final ResponseEntity handleDataException(Exception ex, WebRequest request) {
+        logger.error("A data exception occurred! Message: {}", ex.getMessage());
+
+        Response runtimeErrorResponse = ResponseHelper.validationException();
+        return new ResponseEntity(runtimeErrorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(RuntimeException.class)
