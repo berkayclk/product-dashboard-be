@@ -8,9 +8,10 @@ import com.paydaybank.dashboard.web.helper.ResponseHelper;
 import com.paydaybank.dashboard.web.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,7 @@ public class AuthController {
     UserService userService;
 
     @GetMapping("/{userId}/roles")
+    @PreAuthorize("@methodAuthorizeService.isAuthorizedUser( #userId, authentication )")
     public ResponseEntity getRolesByUserId(@PathVariable UUID userId) {
         Optional<UserDTO> foundUser = userService.findById(userId);
 
