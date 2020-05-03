@@ -23,7 +23,7 @@ public class AuthController {
     UserService userService;
 
     @GetMapping("/{userId}/roles")
-    @PreAuthorize("@methodAuthorizeService.isAuthorizedUser( #userId, authentication )")
+    @PreAuthorize("hasAuthority('ADMIN') || @methodAuthorizeService.isAuthorizedUser( #userId, authentication )")
     public ResponseEntity getRolesByUserId(@PathVariable UUID userId) {
         Optional<UserDTO> foundUser = userService.findById(userId);
 
