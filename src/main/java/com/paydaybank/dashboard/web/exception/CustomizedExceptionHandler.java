@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +39,14 @@ public class CustomizedExceptionHandler extends ResponseEntityExceptionHandler {
 
         Response runtimeErrorResponse = ResponseHelper.validationException();
         return new ResponseEntity(runtimeErrorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public final ResponseEntity handleAccessDeniedException(Exception ex, WebRequest request) {
+        logger.error("A access denies exception occurred! Message: {}", ex.getMessage());
+
+        Response runtimeErrorResponse = ResponseHelper.accessDenied();
+        return new ResponseEntity(runtimeErrorResponse, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(RuntimeException.class)
