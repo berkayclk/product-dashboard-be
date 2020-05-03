@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -21,6 +22,15 @@ public class AuthController {
 
     @Autowired
     UserService userService;
+
+    @GetMapping("/whoami")
+    public ResponseEntity whoAmI(@AuthenticationPrincipal String userId) {
+
+        Optional<UserDTO> foundUser = userService.findById( UUID.fromString(userId) );
+
+        Response response = ResponseHelper.ok(foundUser.orElse(null));
+        return ResponseEntity.ok().body(response);
+    }
 
     @GetMapping("/{userId}/roles")
     @PreAuthorize("hasAuthority('ADMIN') || @methodAuthorizeService.isAuthorizedUser( #userId, authentication )")
