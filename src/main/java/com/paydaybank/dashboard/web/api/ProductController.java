@@ -34,7 +34,7 @@ public class ProductController {
 
         Optional<ProductDTO> product = productService.findById(productId);
 
-        Response<ProductDTO> response = ResponseHelper.ok(product.get());
+        Response<ProductDTO> response = ResponseHelper.ok(product.orElse(null));
         return ResponseEntity.ok()
                 .location(URI.create("/products/"+productId))
                 .body(response);
@@ -46,8 +46,8 @@ public class ProductController {
 
         Optional<ProductDTO> createdProduct = productService.create( Optional.of(productDTO) );
 
-        Response<ProductDTO> response = ResponseHelper.ok(createdProduct.get());
-        return ResponseEntity.created( URI.create("/products/"+ createdProduct.get().getId()))
+        Response<ProductDTO> response = ResponseHelper.ok(createdProduct.orElse(null));
+        return ResponseEntity.created( URI.create(createdProduct.map(p -> "/products/"+ p.getId()).orElse("")))
                             .body(response);
     }
 
@@ -56,9 +56,9 @@ public class ProductController {
 
         Optional<ProductDTO> updatedProduct = productService.update( Optional.of(productDTO) );
 
-        Response<ProductDTO> response = ResponseHelper.ok(updatedProduct.get());
+        Response<ProductDTO> response = ResponseHelper.ok(updatedProduct.orElse(null));
         return ResponseEntity.ok()
-                            .location( URI.create("/products/"+ updatedProduct.get().getId() ) )
+                            .location( URI.create(updatedProduct.map(p -> "/products/"+ p.getId()).orElse("")) )
                             .body(response);
     }
 
@@ -67,9 +67,9 @@ public class ProductController {
 
         Optional<ProductDTO> updatedProduct = productService.setAvailable( productId, available );
 
-        Response<ProductDTO> response = ResponseHelper.ok(updatedProduct.get());
+        Response<ProductDTO> response = ResponseHelper.ok(updatedProduct.orElse(null));
         return ResponseEntity.ok()
-                .location( URI.create("/products/"+ updatedProduct.get().getId() ) )
+                .location( URI.create(updatedProduct.map(p -> "/products/"+ p.getId()).orElse("") ) )
                 .body(response);
     }
 
