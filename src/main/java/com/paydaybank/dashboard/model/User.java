@@ -43,7 +43,7 @@ public class User {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id")
-    private List<UserRole> roles = new ArrayList<>();
+    private Set<UserRole> roles = new HashSet<>();
 
     public User(String fullName, @NotNull String email, @NotNull String password, String title) {
         this.id = UUID.randomUUID();

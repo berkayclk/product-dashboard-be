@@ -1,5 +1,8 @@
 package com.paydaybank.dashboard.dto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.paydaybank.dashboard.enums.UserRoles;
 import com.paydaybank.dashboard.model.UserRole;
 import lombok.AllArgsConstructor;
@@ -7,9 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -19,9 +20,11 @@ public class UserDTO {
     private UUID id;
     private String fullName;
     private String email;
+    @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
     private String title;
-    private List<UserRole> roles = new ArrayList<>();
+    @JsonProperty(access = Access.READ_ONLY)
+    private Set<UserRole> roles = new HashSet<>();
 
     public UserDTO(String fullName, @NotNull String email, @NotNull String password, String title) {
         this.id = UUID.randomUUID();
