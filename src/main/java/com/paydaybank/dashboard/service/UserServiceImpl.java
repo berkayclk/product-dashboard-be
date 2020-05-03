@@ -11,6 +11,7 @@ import com.paydaybank.dashboard.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public Optional<UserDTO> findById(UUID id) {
@@ -52,6 +56,7 @@ public class UserServiceImpl implements UserService {
         logger.info("A new user creation process begun with {} user email", user.getEmail());
 
         user.addRole(UserRoles.USER);
+        user.setPassword( passwordEncoder.encode(user.getPassword()) );
 
         User savedUser = userRepository.save(user);
         UserDTO savedUserDTO = UserMapper.INSTANCE.userToUserDTO(savedUser);
