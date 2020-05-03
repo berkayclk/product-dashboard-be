@@ -5,8 +5,8 @@ import com.paydaybank.dashboard.service.ProductService;
 import com.paydaybank.dashboard.web.helper.ResponseHelper;
 import com.paydaybank.dashboard.web.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -41,6 +41,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity createNewProduct(@RequestBody ProductDTO productDTO ){
 
         Optional<ProductDTO> createdProduct = productService.create( Optional.of(productDTO) );
@@ -73,6 +74,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{productId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity updateProduct(@PathVariable Long productId ){
         productService.deleteById( productId );
         return ResponseEntity.ok().body(ResponseHelper.ok());
