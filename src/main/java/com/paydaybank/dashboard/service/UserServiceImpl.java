@@ -2,6 +2,7 @@ package com.paydaybank.dashboard.service;
 
 import com.paydaybank.dashboard.dto.mapper.UserMapper;
 import com.paydaybank.dashboard.dto.model.UserDTO;
+import com.paydaybank.dashboard.enums.UserRoles;
 import com.paydaybank.dashboard.exception.EntityType;
 import com.paydaybank.dashboard.exception.ExceptionType;
 import com.paydaybank.dashboard.exception.PaydayException;
@@ -49,6 +50,8 @@ public class UserServiceImpl implements UserService {
 
         User user = userDTO.map(UserMapper.INSTANCE::userDtoToUser).get();
         logger.info("A new user creation process begun with {} user email", user.getEmail());
+
+        user.addRole(UserRoles.USER);
 
         User savedUser = userRepository.save(user);
         UserDTO savedUserDTO = UserMapper.INSTANCE.userToUserDTO(savedUser);
