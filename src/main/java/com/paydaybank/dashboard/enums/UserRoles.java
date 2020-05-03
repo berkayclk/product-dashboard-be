@@ -1,8 +1,10 @@
 package com.paydaybank.dashboard.enums;
 
+import java.util.Arrays;
+
 public enum UserRoles {
-    USER("user"),
-    ADMIN("admin");
+    USER("USER"),
+    ADMIN("ADMIN");
 
     private String role;
 
@@ -10,7 +12,12 @@ public enum UserRoles {
         this.role = role;
     }
 
-    public String getRole() {
+    public static UserRoles getRole(String role) {
+        return Arrays.stream(UserRoles.values()).filter(s->s.toString().equals(role)).findFirst().orElse(null);
+    }
+
+    @Override
+    public String toString() {
         return this.role;
     }
 }
