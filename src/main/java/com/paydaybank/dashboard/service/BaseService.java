@@ -14,11 +14,11 @@ public interface BaseService <T, U> {
 
     List<T> finAll();
 
-    Optional<T> create( Optional<T> product );
+    Optional<T> create( Optional<T> modelObject );
 
-    Optional<T> update( Optional<T> product );
+    Optional<T> update( Optional<T> modelObject );
 
     Boolean deleteById( U id );
 
-    Boolean delete( Optional<T> product );
+    Boolean delete( Optional<T> modelObject );
 }
