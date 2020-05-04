@@ -37,6 +37,16 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private static final String[] AUTH_WHITELIST = {
+            //h2
+            "/h2-console/**",
+            // -- swagger ui
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**"
+    };
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -50,8 +60,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtConfig))
             .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtConfig))
             .authorizeRequests()
-            .antMatchers( "/h2-console/**").permitAll()
-            .antMatchers(HttpMethod.POST, jwtConfig.getUri(), "/auth/signup").permitAll()
+            .antMatchers(AUTH_WHITELIST).permitAll() // tools
+            .antMatchers(HttpMethod.POST, jwtConfig.getUri(), "/auth/signup").permitAll() //auth
             .anyRequest().authenticated();
     }
 
