@@ -3,6 +3,7 @@ package com.paydaybank.dashboard.config.security.filters;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.Collections;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
@@ -66,8 +67,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
 
+        UUID tokenId = UUID.randomUUID();
         long now = System.currentTimeMillis();
         String token = Jwts.builder()
+                .setId(tokenId.toString())
                 .setSubject(auth.getName())
                 .claim(jwtConfig.getRolesClaimKey(), auth.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
