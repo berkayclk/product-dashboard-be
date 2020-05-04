@@ -34,7 +34,16 @@ Alternatively you can use the [Spring Boot Maven plugin](https://docs.spring.io/
 ```shell
 mvn spring-boot:run
 ```
-
+## ENV 
+Some variables should be set in application.properties
+ ```application.properties
+    security.jwt.uri : application login path (default: "/auth/login")
+    security.jwt.header : header key that keeps token (default: "Authorization")
+    security.jwt.prefix : prefix of the jwt token (default: "Bearer ")
+    security.jwt.expiration : expiration time in seconds (default: 24*60*60)
+    security.jwt.secret : jwt secret key to sign tokens (default: "JwtSecretKey")
+    security.jwt.rolesKey : field key that keeps roles array in token body (default: "roles")
+```
 ## Copyright
 
 Released under the Apache License 2.0. See the [LICENSE](https://github.com/codecentric/springboot-sample-app/blob/master/LICENSE) file.
