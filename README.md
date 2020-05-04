@@ -16,8 +16,10 @@ Backend Server of the Product Dashboard Project
     </a>
 </p>
 
-This project is developed as [Spring Boot](http://projects.spring.io/spring-boot/) Web Application to manage products on a dashboard. 
+This project is developed as [Spring Boot](http://projects.spring.io/spring-boot/) Web Application to manage products on a dashboard.   
 
+Application is documented with swagger-ui tool. It can be accessible on {domain}/swager-ui.html  
+ 
 ## Requirements
 
 For building and running the application you need:
