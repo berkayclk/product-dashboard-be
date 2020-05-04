@@ -34,6 +34,20 @@ Alternatively you can use the [Spring Boot Maven plugin](https://docs.spring.io/
 ```shell
 mvn spring-boot:run
 ```
+
+## Running the application with DOCKER
+
+Build Dockerfile with following command. This creates and deploy jar file to docker image.
+```
+    docker build -t dashboard .
+```
+Run docker image with following command.
+```
+    docker run -d -p 8080:8080 dashboard
+```
+
+And api is available on 8080 port.
+
 ## ENV 
 Some variables should be set in application.properties
  ```application.properties
