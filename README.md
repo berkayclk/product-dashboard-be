@@ -18,7 +18,8 @@ Backend Server of the Product Dashboard Project
 
 This project is developed as [Spring Boot](http://projects.spring.io/spring-boot/) Web Application to manage products on a dashboard.   
 
-Application is documented with swagger-ui tool. It can be accessible on {domain}/swager-ui.html  
+Application is availablle on the [HEROKU (swagger-doc)](https://product-dashboard-be.herokuapp.com/swagger-ui.html)
+
  
 ## Requirements
 
@@ -60,6 +61,11 @@ Some variables should be set in application.properties
     security.jwt.secret : jwt secret key to sign tokens (default: "JwtSecretKey")
     security.jwt.rolesKey : field key that keeps roles array in token body (default: "roles")
 ```
+
+## TO DO  
+- Validators on models
+- Model documentation for swagger  
+
 ## Copyright
 
 Released under the Apache License 2.0. See the [LICENSE](https://github.com/codecentric/springboot-sample-app/blob/master/LICENSE) file.
