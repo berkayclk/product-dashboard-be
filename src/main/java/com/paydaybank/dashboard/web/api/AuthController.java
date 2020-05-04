@@ -23,7 +23,7 @@ public class AuthController implements AuthInterface {
     @Autowired
     UserService userService;
 
-    @GetMapping(value = "/whoami", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/whoami", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(
             value = "Who Am I",
             notes = "This endpoint returns information of the authenticated user. You must provide an auth token."
