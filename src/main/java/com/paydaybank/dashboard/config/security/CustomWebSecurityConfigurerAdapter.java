@@ -54,9 +54,15 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             "/webjars/**"
     };
 
+    private static final String[] CORS_WHITELIST = {
+        "http://localhost:3000"
+    };
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+            .cors()
+        .and()
             .csrf().ignoringAntMatchers("/h2-console/**").disable()
             .headers().frameOptions().disable()
         .and()
@@ -83,5 +89,17 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource()
+    {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList(CORS_WHITELIST));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
