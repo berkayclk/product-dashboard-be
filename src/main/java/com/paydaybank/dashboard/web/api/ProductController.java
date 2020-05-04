@@ -21,7 +21,7 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping
-    public ResponseEntity getAllProducts(){
+    public ResponseEntity<Response<List<ProductDTO>>> getAllProducts(){
 
         List<ProductDTO> products = productService.finAll();
 
@@ -30,7 +30,7 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity getProductById( @PathVariable Long productId ){
+    public ResponseEntity<Response<ProductDTO>> getProductById( @PathVariable Long productId ){
 
         Optional<ProductDTO> product = productService.findById(productId);
 
@@ -42,7 +42,7 @@ public class ProductController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity createNewProduct(@RequestBody ProductDTO productDTO ){
+    public ResponseEntity<Response<ProductDTO>> createNewProduct(@RequestBody ProductDTO productDTO ){
 
         Optional<ProductDTO> createdProduct = productService.create( Optional.of(productDTO) );
 
@@ -52,7 +52,7 @@ public class ProductController {
     }
 
     @PutMapping
-    public ResponseEntity updateProduct(@RequestBody ProductDTO productDTO ){
+    public ResponseEntity<Response<ProductDTO>> updateProduct(@RequestBody ProductDTO productDTO ){
 
         Optional<ProductDTO> updatedProduct = productService.update( Optional.of(productDTO) );
 
@@ -63,7 +63,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity updateProduct(@PathVariable Long productId, @RequestParam("available") Boolean available ){
+    public ResponseEntity<Response<ProductDTO>> updateProduct(@PathVariable Long productId, @RequestParam("available") Boolean available ){
 
         Optional<ProductDTO> updatedProduct = productService.setAvailable( productId, available );
 

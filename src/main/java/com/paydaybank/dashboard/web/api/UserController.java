@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity getAllUsers(){
+    public ResponseEntity<Response<List<UserDTO>>> getAllUsers(){
 
         List<UserDTO> users = userService.finAll();
 
@@ -34,7 +34,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     @PreAuthorize("hasAuthority('ADMIN') || @methodAuthorizeService.isAuthorizedUser( #userId, authentication )")
-    public ResponseEntity getUserById( @PathVariable UUID userId ){
+    public ResponseEntity<Response<UserDTO>> getUserById( @PathVariable UUID userId ){
 
         Optional<UserDTO> user = userService.findById(userId);
 
@@ -58,7 +58,7 @@ public class UserController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('ADMIN') || (#userDTO != null && @methodAuthorizeService.isAuthorizedUser( #userDTO.getId(), authentication) )")
-    public ResponseEntity updateUser(@RequestBody UserDTO userDTO ){
+    public ResponseEntity<Response<UserDTO>> updateUser(@RequestBody UserDTO userDTO ){
 
         Optional<UserDTO> updatedUser = userService.update( Optional.of(userDTO) );
 

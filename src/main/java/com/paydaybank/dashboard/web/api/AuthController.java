@@ -1,8 +1,6 @@
 package com.paydaybank.dashboard.web.api;
 
 import com.paydaybank.dashboard.dto.model.UserDTO;
-import com.paydaybank.dashboard.exception.PaydayException;
-import com.paydaybank.dashboard.model.UserRole;
 import com.paydaybank.dashboard.service.UserService;
 import com.paydaybank.dashboard.web.helper.ResponseHelper;
 import com.paydaybank.dashboard.web.model.Response;
@@ -33,7 +31,7 @@ public class AuthController {
 
     @GetMapping("/{userId}/roles")
     @PreAuthorize("hasAuthority('ADMIN') || @methodAuthorizeService.isAuthorizedUser( #userId, authentication )")
-    public ResponseEntity getRolesByUserId(@PathVariable UUID userId) {
+    public ResponseEntity<Response<Set<String>>> getRolesByUserId(@PathVariable UUID userId) {
         Optional<UserDTO> foundUser = userService.findById(userId);
 
         Set<String> roles = new HashSet<>();
@@ -49,7 +47,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity signup(@RequestBody UserDTO user) {
+    public ResponseEntity<Response<UserDTO>> signup(@RequestBody UserDTO user) {
         Optional<UserDTO> createdUser = userService.create(Optional.ofNullable(user));
 
         Response response = ResponseHelper.ok(createdUser.orElse(null));
