@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.paydaybank.dashboard.config.security.components.JwtConfig;
 import com.paydaybank.dashboard.dto.request.UserCredentials;
+import com.paydaybank.dashboard.service.AuthTokenService;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,12 +30,14 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter   {
 
+    private AuthTokenService authTokenService;
     private JwtConfig jwtConfig;
     private AuthenticationManager authManager;
 
-    public JwtAuthenticationFilter(AuthenticationManager authManager, JwtConfig jwtConfig) {
+    public JwtAuthenticationFilter(AuthenticationManager authManager, JwtConfig jwtConfig, AuthTokenService authTokenService) {
         this.authManager = authManager;
         this.jwtConfig = jwtConfig;
+        this.authTokenService = authTokenService;
 
         //set login path with prefix that is value of jwtConfig.getUri()
         this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(jwtConfig.getUri(), "POST"));
@@ -68,11 +72,21 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setSubject(auth.getName())
                 .claim(jwtConfig.getRolesClaimKey(), auth.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .claim("id", tokenId.toString())
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + jwtConfig.getExpiration() * 1000))  // in milliseconds
                 .signWith(SignatureAlgorithm.HS512, jwtConfig.getSecret().getBytes())
                 .compact();
 
+        if( authTokenService != null ) {
+            authTokenService.create(tokenId, UUID.fromString(auth.getName()) , (long) jwtConfig.getExpiration());
+        }
+
         response.addHeader(jwtConfig.getHeader(), jwtConfig.getPrefix() + token);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        super.unsuccessfulAuthentication(request, response, failed);
     }
 }

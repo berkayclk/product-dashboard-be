@@ -1,11 +1,11 @@
 package com.paydaybank.dashboard.config.security.filters;
 
 import com.paydaybank.dashboard.config.security.components.JwtConfig;
+import com.paydaybank.dashboard.service.AuthTokenService;
 import com.paydaybank.dashboard.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
@@ -27,11 +28,15 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     @Autowired
     UserService userService;
 
+    AuthTokenService authTokenService;
+
     JwtConfig jwtConfig;
 
-    public JwtAuthorizationFilter(AuthenticationManager authManager, JwtConfig jwtConfig) {
+
+    public JwtAuthorizationFilter(AuthenticationManager authManager, JwtConfig jwtConfig, AuthTokenService authTokenService) {
         super(authManager);
         this.jwtConfig = jwtConfig;
+        this.authTokenService = authTokenService;
     }
 
     @Override
@@ -73,6 +78,12 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             authorities = rolesAsString.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
         }
 
-        return new UsernamePasswordAuthenticationToken(userId, null, authorities);
+        UUID tokenId = UUID.fromString(String.valueOf(tokenClaims.get("id")));
+        boolean isValidToken = authTokenService.isValid(tokenId);
+        if( !isValidToken ) {
+            return null;
+        }
+
+        return new UsernamePasswordAuthenticationToken(userId, tokenId, authorities);
     }
 }
