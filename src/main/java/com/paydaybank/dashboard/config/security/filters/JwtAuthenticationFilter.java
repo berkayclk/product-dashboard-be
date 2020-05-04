@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.paydaybank.dashboard.config.security.components.JwtConfig;
+import com.paydaybank.dashboard.config.security.model.UserCredentials;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -76,17 +77,5 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .compact();
 
         response.addHeader(jwtConfig.getHeader(), jwtConfig.getPrefix() + token);
-    }
-
-    @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        ;
-    }
-
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    private static class UserCredentials {
-        private String email, password;
     }
 }
