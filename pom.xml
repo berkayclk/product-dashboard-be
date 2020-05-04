@@ -22,6 +22,7 @@
         <com.h2database.version>1.4.197</com.h2database.version>
         <io.jsonwebtoken.version>0.9.1</io.jsonwebtoken.version>
         <io.springfox.swagger.version>2.9.2</io.springfox.swagger.version>
+        <org.passay.version>1.0</org.passay.version>
     </properties>
 
     <dependencies>
@@ -62,6 +63,11 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>${io.jsonwebtoken.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.passay</groupId>
+            <artifactId>passay</artifactId>
+            <version>${org.passay.version}</version>
         </dependency>
 
         <!-- swagger  doc -->

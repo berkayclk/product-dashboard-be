@@ -3,6 +3,7 @@ package com.paydaybank.dashboard.dto.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.paydaybank.dashboard.config.datavalidators.ValidPassword;
 import com.paydaybank.dashboard.enums.UserRoles;
 import com.paydaybank.dashboard.model.UserRole;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,9 +32,8 @@ public class UserDTO {
     private String email;
 
     @JsonProperty(access = Access.WRITE_ONLY)
-    @ApiModelProperty(accessMode = ApiModelProperty.AccessMode.AUTO)
-    @NotBlank(message = "password field is required!")
-    @Length(max = 10, min = 6, message = "Length of the password field should be between 6 and 10")
+    @ApiModelProperty(accessMode = ApiModelProperty.AccessMode.AUTO, notes = "A minimum 8 characters password contains a combination of uppercase and lowercase letter and number and special character are required. Sequential passwords are not allowed!")
+    @ValidPassword(message = "A minimum 8 characters password contains a combination of uppercase and lowercase letter and number and special character are required. Sequential passwords are not allowed!")
     private String password;
 
     private String title;
