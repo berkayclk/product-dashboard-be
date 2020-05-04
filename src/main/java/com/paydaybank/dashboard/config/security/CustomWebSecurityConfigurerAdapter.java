@@ -2,6 +2,7 @@ package com.paydaybank.dashboard.config.security;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.paydaybank.dashboard.config.security.components.JwtConfig;
 import com.paydaybank.dashboard.config.security.filters.JwtAuthorizationFilter;
 import com.paydaybank.dashboard.config.security.filters.JwtAuthenticationFilter;
@@ -58,6 +59,9 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private Gson gson;
+
     private static final String[] AUTH_WHITELIST = {
             //h2
             "/h2-console/**",
@@ -79,7 +83,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
             .addFilterBefore(new JwtAuthorizationFilter(authenticationManager(), jwtConfig, authTokenService), LogoutFilter.class)
-            .addFilterAfter(new JwtAuthenticationFilter(authenticationManager(), jwtConfig, authTokenService), LogoutFilter.class)
+            .addFilterAfter(new JwtAuthenticationFilter(authenticationManager(), jwtConfig, authTokenService, gson), LogoutFilter.class)
             .exceptionHandling().authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
         .and()
             .authorizeRequests()
@@ -112,5 +116,10 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    Gson gson(){
+        return new Gson();
     }
 }

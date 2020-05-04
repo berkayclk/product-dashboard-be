@@ -1,6 +1,7 @@
 package com.paydaybank.dashboard.config.security.filters;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.Collections;
 import java.util.UUID;
@@ -11,8 +12,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.paydaybank.dashboard.config.security.components.JwtConfig;
 import com.paydaybank.dashboard.dto.request.UserCredentials;
+import com.paydaybank.dashboard.dto.response.Response;
+import com.paydaybank.dashboard.helper.ResponseHelper;
 import com.paydaybank.dashboard.service.AuthTokenService;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,11 +37,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private AuthTokenService authTokenService;
     private JwtConfig jwtConfig;
     private AuthenticationManager authManager;
+    private Gson gson;
 
-    public JwtAuthenticationFilter(AuthenticationManager authManager, JwtConfig jwtConfig, AuthTokenService authTokenService) {
+    public JwtAuthenticationFilter(AuthenticationManager authManager, JwtConfig jwtConfig, AuthTokenService authTokenService, Gson gson) {
         this.authManager = authManager;
         this.jwtConfig = jwtConfig;
         this.authTokenService = authTokenService;
+        this.gson = gson;
 
         //set login path with prefix that is value of jwtConfig.getUri()
         this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(jwtConfig.getUri(), "POST"));
@@ -83,10 +89,27 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
 
         response.addHeader(jwtConfig.getHeader(), jwtConfig.getPrefix() + token);
+
+        Response responseObj = ResponseHelper.ok(jwtConfig.getPrefix() + token);
+        String responseJson = gson.toJson(responseObj);
+
+        PrintWriter out = response.getWriter();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.print(responseJson);
+        out.flush();
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        super.unsuccessfulAuthentication(request, response, failed);
+
+        Response responseObj = ResponseHelper.unauthorized();
+        String responseJson = gson.toJson(responseObj);
+
+        PrintWriter out = response.getWriter();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.print(responseJson);
+        out.flush();
     }
 }
