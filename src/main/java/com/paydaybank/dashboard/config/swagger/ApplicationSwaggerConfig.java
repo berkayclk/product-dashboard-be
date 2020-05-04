@@ -43,7 +43,11 @@ public class ApplicationSwaggerConfig extends WebMvcConfigurationSupport {
     private ApiInfo metaData() {
         return new ApiInfoBuilder()
                 .title("Payday Bank - Product Dashboard - REST API")
-                .description("This project is developed to manage products on a dashboard.")
+                .description("This project is developed to manage products on a dashboard.\r\n" +
+                        "<h3> Default Users</h3> \r\n" +
+                        " -- <b>Email :</b> admin@admin.net <b>Password :</b> admin <b>Role:</b> ADMIN\r\n" +
+                        " -- <b>Email :</b> user@user.net <b>Password :</b> user <b>Role:</b> USER"
+                )
                 .version("1.0.0")
                 .license("Apache License Version 2.0")
                 .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")
