@@ -1,8 +1,8 @@
 package com.paydaybank.dashboard.web.exception;
 
 import com.paydaybank.dashboard.exception.PaydayException;
-import com.paydaybank.dashboard.web.helper.ResponseHelper;
-import com.paydaybank.dashboard.web.model.Response;
+import com.paydaybank.dashboard.helper.ResponseHelper;
+import com.paydaybank.dashboard.dto.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;

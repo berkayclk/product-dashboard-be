@@ -1,4 +1,4 @@
-package com.paydaybank.dashboard.web.model;
+package com.paydaybank.dashboard.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.paydaybank.dashboard.web.enums.ResponseStatus;

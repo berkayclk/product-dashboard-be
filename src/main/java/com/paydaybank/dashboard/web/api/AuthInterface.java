@@ -1,11 +1,10 @@
 package com.paydaybank.dashboard.web.api;
 
-import com.paydaybank.dashboard.config.security.model.UserCredentials;
+import com.paydaybank.dashboard.dto.request.UserCredentials;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ResponseHeader;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

@@ -1,4 +1,4 @@
-package com.paydaybank.dashboard.config.security.model;
+package com.paydaybank.dashboard.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

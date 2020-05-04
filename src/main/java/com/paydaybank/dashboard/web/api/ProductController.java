@@ -2,8 +2,8 @@ package com.paydaybank.dashboard.web.api;
 
 import com.paydaybank.dashboard.dto.model.ProductDTO;
 import com.paydaybank.dashboard.service.ProductService;
-import com.paydaybank.dashboard.web.helper.ResponseHelper;
-import com.paydaybank.dashboard.web.model.Response;
+import com.paydaybank.dashboard.helper.ResponseHelper;
+import com.paydaybank.dashboard.dto.response.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

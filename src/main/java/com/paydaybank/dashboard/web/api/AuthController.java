@@ -2,8 +2,8 @@ package com.paydaybank.dashboard.web.api;
 
 import com.paydaybank.dashboard.dto.model.UserDTO;
 import com.paydaybank.dashboard.service.UserService;
-import com.paydaybank.dashboard.web.helper.ResponseHelper;
-import com.paydaybank.dashboard.web.model.Response;
+import com.paydaybank.dashboard.helper.ResponseHelper;
+import com.paydaybank.dashboard.dto.response.Response;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

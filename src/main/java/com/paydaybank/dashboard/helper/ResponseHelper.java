@@ -1,6 +1,6 @@
-package com.paydaybank.dashboard.web.helper;
+package com.paydaybank.dashboard.helper;
 
-import com.paydaybank.dashboard.web.model.Response;
+import com.paydaybank.dashboard.dto.response.Response;
 import com.paydaybank.dashboard.web.enums.ResponseStatus;
 
 public class ResponseHelper {
