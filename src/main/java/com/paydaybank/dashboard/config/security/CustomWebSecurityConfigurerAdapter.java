@@ -9,8 +9,10 @@ import com.paydaybank.dashboard.config.security.handler.JwtLogoutHandler;
 import com.paydaybank.dashboard.config.security.handler.LogoutSuccessHandler;
 import com.paydaybank.dashboard.service.AuthTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,14 +25,26 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @Component
 @EnableWebSecurity
+@EnableWebMvc
 @EnableAutoConfiguration
 @EnableGlobalMethodSecurity( prePostEnabled = true)
 @ConditionalOnBean({ JwtConfig.class, AuthTokenService.class })
 public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+
+    @Value("${security.cors.domains:http://localhost:3000}")
+    String corsWhiteList;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -52,10 +66,6 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             "/swagger-ui.html",
             "/v2/api-docs",
             "/webjars/**"
-    };
-
-    private static final String[] CORS_WHITELIST = {
-        "http://localhost:3000"
     };
 
     @Override
@@ -95,8 +105,9 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     CorsConfigurationSource corsConfigurationSource()
     {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(CORS_WHITELIST));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
+        configuration.setAllowedOrigins(Arrays.asList(corsWhiteList.split(",")));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*","Authorization"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

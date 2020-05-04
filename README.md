@@ -60,6 +60,7 @@ Some variables should be set in application.properties
     security.jwt.expiration : expiration time in seconds (default: 24*60*60)
     security.jwt.secret : jwt secret key to sign tokens (default: "JwtSecretKey")
     security.jwt.rolesKey : field key that keeps roles array in token body (default: "roles")
+    security.cors.domains: ',' seperated cors domains string (default: http:/localhost:3000)   
 ```
 
 ## TO DO  
