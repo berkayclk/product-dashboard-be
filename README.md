@@ -63,7 +63,6 @@ Some variables should be set in application.properties
 ```
 
 ## TO DO  
-- Validators on models
 - Model documentation for swagger  
 
 ## Copyright

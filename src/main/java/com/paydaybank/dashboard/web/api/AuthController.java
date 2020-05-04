@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -77,7 +78,7 @@ public class AuthController implements AuthInterface {
     @ApiResponses({
             @ApiResponse(code = 400, message = "Bad Request! Some invalid entries were provided!", response = Response.class )
     })
-    public ResponseEntity<Response<UserDTO>> signup(@RequestBody UserDTO user) {
+    public ResponseEntity<Response<UserDTO>> signup( @Valid @RequestBody UserDTO user) {
         Optional<UserDTO> createdUser = userService.create(Optional.ofNullable(user));
 
         Response response = ResponseHelper.ok(createdUser.orElse(null));
