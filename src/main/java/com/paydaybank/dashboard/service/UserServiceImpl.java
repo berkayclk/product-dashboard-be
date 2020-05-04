@@ -56,6 +56,7 @@ public class UserServiceImpl implements UserService {
         logger.info("A new user creation process begun with {} user email", user.getEmail());
 
         user.addRole(UserRoles.USER);
+        user.setEmail( user.getEmail().toLowerCase().trim() );
         user.setPassword( passwordEncoder.encode(user.getPassword()) );
 
         User savedUser = userRepository.save(user);

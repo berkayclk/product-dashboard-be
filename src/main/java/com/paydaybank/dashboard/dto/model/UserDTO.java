@@ -3,6 +3,7 @@ package com.paydaybank.dashboard.dto.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.paydaybank.dashboard.config.datavalidators.UniqueEmail;
 import com.paydaybank.dashboard.config.datavalidators.ValidPassword;
 import com.paydaybank.dashboard.enums.UserRoles;
 import com.paydaybank.dashboard.model.UserRole;
@@ -29,6 +30,7 @@ public class UserDTO {
     @Email(message = "email field is not valid!")
     @NotBlank(message = "email field is required!")
     @Length(max = 75, min = 5, message = "Length of the email field should be between 5 and 75")
+    @UniqueEmail(message = "Email is used!")
     private String email;
 
     @JsonProperty(access = Access.WRITE_ONLY)
